@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kindered.Bowling.Api.Models
+namespace Kindred.Bowling.Api.Models
 {
     public class ScoringResultDto
     {

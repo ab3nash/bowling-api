@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Kindered.Bowling.Api
+namespace Kindred.Bowling.Api
 {
     public class Program
     {

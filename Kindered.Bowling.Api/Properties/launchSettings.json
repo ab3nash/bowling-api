@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Kindered.Bowling.Api": {
+    "Kindred.Bowling.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

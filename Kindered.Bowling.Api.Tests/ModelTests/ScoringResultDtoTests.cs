@@ -1,7 +1,7 @@
-﻿using Kindered.Bowling.Api.Models;
+﻿using Kindred.Bowling.Api.Models;
 using Xunit;
 
-namespace Kindered.Bowling.Api.Tests.DTOTests
+namespace Kindred.Bowling.Api.Tests.DTOTests
 {
     public class ScoringResultDtoTests
     {

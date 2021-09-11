@@ -1,11 +1,12 @@
-using Kindered.Bowling.Api.Services.Scoring;
+using Kindred.Bowling.Api.Services.Framing;
+using Kindred.Bowling.Api.Services.Scoring;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Kindered.Bowling.Api
+namespace Kindred.Bowling.Api
 {
     public class Startup
     {
@@ -23,6 +24,7 @@ namespace Kindered.Bowling.Api
 
             // register custom services
             services.AddScoped<IScoringService, ScoringService>();
+            services.AddScoped<IFramingService, FramingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

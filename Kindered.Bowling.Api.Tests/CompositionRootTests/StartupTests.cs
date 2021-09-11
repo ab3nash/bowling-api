@@ -1,10 +1,11 @@
-﻿using Kindered.Bowling.Api.Services.Scoring;
+﻿using Kindred.Bowling.Api.Services.Framing;
+using Kindred.Bowling.Api.Services.Scoring;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace Kindered.Bowling.Api.Tests.CompositionRootTests
+namespace Kindred.Bowling.Api.Tests.CompositionRootTests
 {
     public class StartupTests
     {
@@ -21,12 +22,21 @@ namespace Kindered.Bowling.Api.Tests.CompositionRootTests
         }
 
         [Fact]
-        public void ConfigureServices_RegistersCarRepositoryCorrectly()
+        public void ConfigureServices_RegistersScoringServiceCorrectly()
         {
             var service = _serviceProvider.GetRequiredService<IScoringService>();
 
             Assert.NotNull(service);
             Assert.IsType<ScoringService>(service);
+        }
+
+        [Fact]
+        public void ConfigureServices_RegistersFramingServiceCorrectly()
+        {
+            var service = _serviceProvider.GetRequiredService<IFramingService>();
+
+            Assert.NotNull(service);
+            Assert.IsType<FramingService>(service);
         }
     }
 }

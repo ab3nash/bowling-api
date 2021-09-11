@@ -1,7 +1,7 @@
-﻿using Kindered.Bowling.Api.Models;
+﻿using Kindred.Bowling.Api.Models;
 using System.Collections.Generic;
 
-namespace Kindered.Bowling.Api.Services.Scoring
+namespace Kindred.Bowling.Api.Services.Scoring
 {
     public interface IScoringService
     {
