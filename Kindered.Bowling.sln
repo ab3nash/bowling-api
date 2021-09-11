@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kindered.Bowling.Api", "Kindered.Bowling.Api\Kindered.Bowling.Api.csproj", "{A274374D-A572-47F3-BCF4-DF63B55AE1B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kindered.Bowling.Api.Tests", "Kindered.Bowling.Api.Tests\Kindered.Bowling.Api.Tests.csproj", "{2BDE728E-3AAB-4DDC-A435-D45882E82D25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kindered.Bowling.Api.Tests", "Kindered.Bowling.Api.Tests\Kindered.Bowling.Api.Tests.csproj", "{75A84D23-A3FE-4457-8D24-1134898900C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{A274374D-A572-47F3-BCF4-DF63B55AE1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A274374D-A572-47F3-BCF4-DF63B55AE1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A274374D-A572-47F3-BCF4-DF63B55AE1B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BDE728E-3AAB-4DDC-A435-D45882E82D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BDE728E-3AAB-4DDC-A435-D45882E82D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BDE728E-3AAB-4DDC-A435-D45882E82D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BDE728E-3AAB-4DDC-A435-D45882E82D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75A84D23-A3FE-4457-8D24-1134898900C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75A84D23-A3FE-4457-8D24-1134898900C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75A84D23-A3FE-4457-8D24-1134898900C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75A84D23-A3FE-4457-8D24-1134898900C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
