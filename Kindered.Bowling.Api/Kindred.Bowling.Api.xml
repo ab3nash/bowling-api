@@ -4,6 +4,11 @@
         <name>Kindred.Bowling.Api</name>
     </assembly>
     <members>
+        <member name="T:Kindred.Bowling.Api.Controllers.ScoresController">
+            <summary>
+            Handles requests related to 10 Pin bowling scores
+            </summary>
+        </member>
         <member name="T:Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware">
             <summary>
             Middleware to handle API key authentication
@@ -90,6 +95,16 @@
             A flag indicating if the frame is an open frame
             </summary>
         </member>
+        <member name="T:Kindred.Bowling.Api.Models.ScoringRequestDto">
+            <summary>
+            Models the scoring request parameters
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.ScoringRequestDto.PinsDowned">
+            <summary>
+            The list of pins downed on each throw
+            </summary>
+        </member>
         <member name="T:Kindred.Bowling.Api.Models.ScoringResultDto">
             <summary>
             DTO to transfer scoring result of a 10 Pin Bowling game
@@ -114,7 +129,7 @@
             <summary>
             Forms frames from a list of pins downed in game and validates the frames formed
             </summary>
-            <exception cref="T:System.Exception">
+            <exception cref="T:System.ArgumentException">
             Thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
             </exception> 
             <param name="pinsDowned">All the pins downed in a game</param>
@@ -124,7 +139,7 @@
             <summary>
             Validates all frames in a game, throws exception if invalid
             </summary>
-            <exception cref="T:System.Exception">
+            <exception cref="T:System.ArgumentException">
             Thrown when one or more Frame(s) are invalid
             </exception> 
             <param name="frames"></param>
@@ -138,7 +153,7 @@
             <summary>
             Forms frames from a list of pins downed in game and validates the frames formed
             </summary>
-            <exception cref="!:Exception">
+            <exception cref="T:System.ArgumentException">
             Can be thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
             </exception> 
             <param name="pinsDowned">All the pins downed in a game</param>

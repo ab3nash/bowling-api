@@ -11,7 +11,7 @@ namespace Kindred.Bowling.Api.Services.Framing
         /// <summary>
         /// Forms frames from a list of pins downed in game and validates the frames formed
         /// </summary>
-        /// <exception cref="System.Exception">
+        /// <exception cref="System.ArgumentException">
         /// Can be thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
         /// </exception> 
         /// <param name="pinsDowned">All the pins downed in a game</param>

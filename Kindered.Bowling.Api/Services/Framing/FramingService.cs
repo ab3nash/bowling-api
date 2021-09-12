@@ -13,7 +13,7 @@ namespace Kindred.Bowling.Api.Services.Framing
         /// <summary>
         /// Forms frames from a list of pins downed in game and validates the frames formed
         /// </summary>
-        /// <exception cref="Exception">
+        /// <exception cref="ArgumentException">
         /// Thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
         /// </exception> 
         /// <param name="pinsDowned">All the pins downed in a game</param>
@@ -31,12 +31,12 @@ namespace Kindred.Bowling.Api.Services.Framing
             {
                 if (pinsDowned[i] < 0 || pinsDowned[i] > 10)
                 {
-                    throw new Exception(string.Format("Invalid throw with {0} pins down.", pinsDowned[i]));
+                    throw new ArgumentException(string.Format("Invalid throw with {0} pins down.", pinsDowned[i]));
                 }
 
                 if (frames.Count > 10)
                 {
-                    throw new Exception("Invalid number of frames.");
+                    throw new ArgumentException("Invalid number of frames.");
                 }
 
                 if (frames.Count == 10)
@@ -56,7 +56,7 @@ namespace Kindred.Bowling.Api.Services.Framing
                     }
                     else
                     {
-                        throw new Exception("Invalid number of frames.");
+                        throw new ArgumentException("Invalid number of frames.");
                     }
                     break;
                 }
@@ -73,7 +73,7 @@ namespace Kindred.Bowling.Api.Services.Framing
                     }
                     else
                     {
-                        throw new Exception(string.Format("Invalid frame(s): ({0}, 10)", lastThrowPinsDowned));
+                        throw new ArgumentException(string.Format("Invalid frame(s): ({0}, 10)", lastThrowPinsDowned));
                     }
                     lastThrowPinsDowned = null;
                     continue;
@@ -101,7 +101,7 @@ namespace Kindred.Bowling.Api.Services.Framing
         /// <summary>
         /// Validates all frames in a game, throws exception if invalid
         /// </summary>
-        /// <exception cref="Exception">
+        /// <exception cref="ArgumentException">
         /// Thrown when one or more Frame(s) are invalid
         /// </exception> 
         /// <param name="frames"></param>
@@ -117,7 +117,7 @@ namespace Kindred.Bowling.Api.Services.Framing
                 exceptionMessage += string.Join(", ", invalidFrameString);
 
 
-                throw new Exception(exceptionMessage);
+                throw new ArgumentException(exceptionMessage);
             }
         }
     }

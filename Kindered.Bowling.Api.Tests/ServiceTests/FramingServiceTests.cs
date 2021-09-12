@@ -177,52 +177,62 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         }
 
         [Fact]
-        public void GetFrames_InvalidFrame_ThrowsException()
+        public void GetFrames_InvalidFrame_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 5, 6 };
 
-            var exception = Assert.Throws<Exception>(() => framingService.GetFrames(pinsDowned));
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid frame(s): (5, 6)", exception.Message);
         }
 
         [Fact]
-        public void GetFrames_MultipleInvalidFrames_ThrowsException()
+        public void GetFrames_MultipleInvalidFrames_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 5, 6, 3, 9 };
 
-            var exception = Assert.Throws<Exception>(() => framingService.GetFrames(pinsDowned));
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid frame(s): (5, 6), (3, 9)", exception.Message);
         }
 
         [Fact]
-        public void GetFrames_InvalidNumberOfFramesAfterFinalStrike_ThrowsException()
+        public void GetFrames_InvalidNumberOfFramesAfterFinalStrike_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1 };
 
-            var exception = Assert.Throws<Exception>(() => framingService.GetFrames(pinsDowned));
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid number of frames.", exception.Message);
         }
 
         [Fact]
-        public void GetFrames_InvalidNumberOfFramesAfterFinalSpare_ThrowsException()
+        public void GetFrames_InvalidNumberOfFramesAfterFinalSpare_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 1, 2, 3 };
 
-            var exception = Assert.Throws<Exception>(() => framingService.GetFrames(pinsDowned));
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid number of frames.", exception.Message);
         }
 
         [Fact]
-        public void GetFrames_InvalidThrow_ThrowsException()
+        public void GetFrames_MoreFramesAfterGameCompletion_ThrowsArgumentException()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
+            Assert.Equal("Invalid number of frames.", exception.Message);
+        }
+
+        [Fact]
+        public void GetFrames_InvalidThrow_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 10, 11 };
 
-            var exception = Assert.Throws<Exception>(() => framingService.GetFrames(pinsDowned));
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid throw with 11 pins down.", exception.Message);
         }
     }
