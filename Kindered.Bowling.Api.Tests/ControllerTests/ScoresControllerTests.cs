@@ -65,6 +65,51 @@ namespace Kindred.Bowling.Api.Tests.ControllerTests
         }
         #endregion
 
+        #region Bad Request - NullScoringRequest
+        [Fact]
+        public void Post_NullScoringRequest_ResponseNotNull()
+        {
+            var scoresController = new ScoresController(
+                MockService.GetFramingServiceMock(),
+                MockService.GetScoringServiceMock(),
+                MockService.GetLoggerMock<ScoresController>());
+
+            var response = scoresController.Post(null);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Post_NullScoringRequest_ResultIsBadRequestObjectResult()
+        {
+            var scoresController = new ScoresController(
+                MockService.GetFramingServiceMock(),
+                MockService.GetScoringServiceMock(),
+                MockService.GetLoggerMock<ScoresController>());
+
+            var response = scoresController.Post(null);
+
+            BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
+        [Fact]
+        public void Post_NullScoringRequest_ResultHasCorrectErrorMessage()
+        {
+            var scoresController = new ScoresController(
+                MockService.GetFramingServiceMock(),
+                MockService.GetScoringServiceMock(),
+                MockService.GetLoggerMock<ScoresController>());
+
+            var response = scoresController.Post(null);
+            BadRequestObjectResult badRequestResult = response.Result as BadRequestObjectResult;
+            SerializableError error = badRequestResult.Value as SerializableError;
+            var errorMessage = (error["pinsDowned"] as string[])[0];
+
+            Assert.Equal("Scoring request object is empty.", errorMessage);
+        }
+        #endregion
+        
         #region Bad Request - NullPinsDowned
         [Fact]
         public void Post_NullPinsDowned_ResponseNotNull()
@@ -90,6 +135,7 @@ namespace Kindred.Bowling.Api.Tests.ControllerTests
             var scoringRequest = new ScoringRequestDto();
 
             var response = scoresController.Post(scoringRequest);
+
             BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(response.Result);
             Assert.IsType<SerializableError>(badRequestResult.Value);
         }
@@ -104,72 +150,12 @@ namespace Kindred.Bowling.Api.Tests.ControllerTests
             var scoringRequest = new ScoringRequestDto();
 
             var response = scoresController.Post(scoringRequest);
+
             BadRequestObjectResult badRequestResult = response.Result as BadRequestObjectResult;
             SerializableError error = badRequestResult.Value as SerializableError;
             var errorMessage = (error["pinsDowned"] as string[])[0];
 
             Assert.Equal("PinsDowned is required.", errorMessage);
-        }
-        #endregion
-
-        #region Bad Request - InvalidPinsDowned
-        [Fact]
-        public void Post_InvalidPinsDowned_ResponseNotNull()
-        {
-            var scoresController = new ScoresController(
-                MockService.GetFramingServiceMock(),
-                MockService.GetScoringServiceMock(),
-                MockService.GetLoggerMock<ScoresController>());
-            scoresController.ModelState.AddModelError("pinsDowned", "Invalid throw with 11 pins down.");
-            var scoringRequest = new ScoringRequestDto
-            {
-                PinsDowned = new List<int> { 11, 21, -2 }
-            };
-
-            var response = scoresController.Post(scoringRequest);
-
-            Assert.NotNull(response);
-        }
-
-        [Fact]
-        public void Post_InvalidPinsDowned_ResultIsBadRequestObjectResult()
-        {
-            var scoresController = new ScoresController(
-                MockService.GetFramingServiceMock(),
-                MockService.GetScoringServiceMock(),
-                MockService.GetLoggerMock<ScoresController>());
-            scoresController.ModelState.AddModelError("pinsDowned", "Invalid throw with 11 pins down.");
-            var scoringRequest = new ScoringRequestDto
-            {
-                PinsDowned = new List<int> { 11, 21, -2 }
-            };
-
-            var response = scoresController.Post(scoringRequest);
-
-            BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(response.Result);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
-        }
-
-        [Fact]
-        public void Post_InvalidPinsDowned_ResultHasCorrectErrorMessage()
-        {
-            var scoresController = new ScoresController(
-                MockService.GetFramingServiceMock(),
-                MockService.GetScoringServiceMock(),
-                MockService.GetLoggerMock<ScoresController>());
-            scoresController.ModelState.AddModelError("pinsDowned", "Invalid throw with 11 pins down.");
-            var scoringRequest = new ScoringRequestDto
-            {
-                PinsDowned = new List<int> { 11, 21, -2 }
-            };
-
-            var response = scoresController.Post(scoringRequest);
-
-            BadRequestObjectResult badRequestResult = response.Result as BadRequestObjectResult;
-            SerializableError error = badRequestResult.Value as SerializableError;
-            var errorMessage = (error["pinsDowned"] as string[])[0];
-
-            Assert.Equal("Invalid throw with 11 pins down.", errorMessage);
         }
         #endregion
 
@@ -255,6 +241,41 @@ namespace Kindred.Bowling.Api.Tests.ControllerTests
             var scoresController = new ScoresController(
                 MockService.GetFramingServiceMock_ThrowsException(),
                 MockService.GetScoringServiceMock(),
+                MockService.GetLoggerMock<ScoresController>());
+            var scoringRequest = new ScoringRequestDto
+            {
+                PinsDowned = new List<int> { 1, 2 }
+            };
+
+            var response = scoresController.Post(scoringRequest);
+
+            StatusCodeResult statusCodeResult = Assert.IsType<StatusCodeResult>(response.Result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, statusCodeResult.StatusCode);
+        }
+
+        [Fact]
+        public void Post_ScoringServiceThrowsException_ResponseNotNull()
+        {
+            var scoresController = new ScoresController(
+                MockService.GetFramingServiceMock(),
+                MockService.GetScoringServiceMock_ThrowsException(),
+                MockService.GetLoggerMock<ScoresController>());
+            var scoringRequest = new ScoringRequestDto
+            {
+                PinsDowned = new List<int> { 1, 2 }
+            };
+
+            var response = scoresController.Post(scoringRequest);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Post_ScoringServiceThrowsException_ResultIsBadRequestObjectResult()
+        {
+            var scoresController = new ScoresController(
+                MockService.GetFramingServiceMock(),
+                MockService.GetScoringServiceMock_ThrowsException(),
                 MockService.GetLoggerMock<ScoresController>());
             var scoringRequest = new ScoringRequestDto
             {

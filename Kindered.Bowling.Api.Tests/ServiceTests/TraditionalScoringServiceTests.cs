@@ -838,7 +838,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         }
 
         [Fact]
-        public void CalculateScore_BonusThrowAfterSparePresent_IsInompleteGame()
+        public void CalculateScore_BonusThrowAfterSparePresent_IsIncompleteGame()
         {
             TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
@@ -858,8 +858,6 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
 
             Assert.True(result.GameCompleted);
         }
-        #endregion
-        #region After Spare
         #endregion
         #endregion
     }

@@ -83,11 +83,6 @@ namespace Kindred.Bowling.Api.Services.Scoring
         /// <returns>True if complete, False otherwise</returns>
         private bool IsGameComplete(List<Frame> frames)
         {
-            if (frames == null)
-            {
-                return false;
-            }
-
             if (frames.Count == 10)
             {
                 Frame lastFrame = frames.Last();
@@ -107,10 +102,6 @@ namespace Kindred.Bowling.Api.Services.Scoring
                 Frame currentFrame = frames[10];
 
                 if (lastFrame.IsStrike && (!currentFrame.IsBonus || !currentFrame.SecondThrowPinsDowned.HasValue))
-                {
-                    return false;
-                }
-                else if (lastFrame.IsSpare && !currentFrame.IsBonus)
                 {
                     return false;
                 }

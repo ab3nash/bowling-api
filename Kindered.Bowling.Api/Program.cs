@@ -10,6 +10,7 @@ namespace Kindred.Bowling.Api
     {
         public static void Main(string[] args)
         {
+            // read config from nlog.config file and configure NLog then get logger
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {

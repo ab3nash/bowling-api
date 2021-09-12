@@ -10,7 +10,7 @@ namespace Kindred.Bowling.Api.Models
         /// <summary>
         /// The list of Frame Progress Scores for the game
         /// </summary>
-        public List<string> FrameProgressScores { get; private set; } = new List<string>();
+        public List<string> FrameProgressScores { get; } = new List<string>();
 
         /// <summary>
         /// Indicates whether the game is complete

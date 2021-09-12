@@ -9,6 +9,27 @@
             Handles requests related to 10 Pin bowling scores
             </summary>
         </member>
+        <member name="M:Kindred.Bowling.Api.Controllers.ScoresController.#ctor(Kindred.Bowling.Api.Services.Framing.IFramingService,Kindred.Bowling.Api.Services.Scoring.IScoringService,Microsoft.Extensions.Logging.ILogger{Kindred.Bowling.Api.Controllers.ScoresController})">
+            <summary>
+            Creates an instance of ScoresController class
+            </summary>
+            <param name="framingService">An implementation of IFramingService</param>
+            <param name="scoringService">An implementation of IScoringService</param>
+            <param name="logger">The logger</param>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Controllers.ScoresController.Post(Kindred.Bowling.Api.Models.ScoringRequestDto)">
+            <summary>
+            Calculates the scores and checks if game is completed for a set of pins downed per throw.
+            Gets Frames from the pinsDowned list and calculates frame progress score per frame.
+            </summary>
+            <param name="scoringRequest">Scoring request object with list of pins downed per throw</param>
+            <returns>
+            Either One of:
+            1. OK with ScoringResultDto for success
+            2. Badrequest with ModelState dictionary for bad requests
+            3. InternalServerError
+            </returns>
+        </member>
         <member name="T:Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware">
             <summary>
             Middleware to handle API key authentication

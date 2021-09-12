@@ -22,6 +22,18 @@ namespace Kindred.Bowling.Api.Tests.CompositionRootTests
         }
 
         [Fact]
+        public void Constructor_SetConfiguration_ConfigurationIsSet()
+        {
+            Mock<IConfiguration> configurationStub = new Mock<IConfiguration>();
+            var services = new ServiceCollection();
+            Startup startup = new Startup(configurationStub.Object);
+
+            startup.ConfigureServices(services);
+
+            Assert.NotNull(startup.Configuration);
+        }
+
+        [Fact]
         public void ConfigureServices_RegistersScoringServiceCorrectly()
         {
             var service = _serviceProvider.GetRequiredService<IScoringService>();

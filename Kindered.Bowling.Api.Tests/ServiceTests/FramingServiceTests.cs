@@ -217,6 +217,52 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         }
 
         [Fact]
+        public void GetFrames_IncompleteFrameAfterFinalSpare_Has11Frames()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 1, 2 };
+
+            List<Frame> frames = framingService.GetFrames(pinsDowned);
+
+            Assert.Equal(11, frames.Count);
+        }
+
+        [Fact]
+        public void GetFrames_IncompleteFrameAfterFinalSpare_Has1BonusFrame()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 1, 2};
+
+            List<Frame> frames = framingService.GetFrames(pinsDowned);
+            List<Frame> bonusFrames = frames.Where(f => f.IsBonus).ToList();
+
+            Assert.Single(bonusFrames);
+        }
+
+        [Fact]
+        public void GetFrames_IncompleteFrameAfterFinalStrike_Has11Frames()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 10, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 2 };
+
+            List<Frame> frames = framingService.GetFrames(pinsDowned);
+
+            Assert.Equal(11, frames.Count);
+        }
+
+        [Fact]
+        public void GetFrames_IncompleteFrameAfterFinalStrike_Has1BonusFrame()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 10, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 2};
+
+            List<Frame> frames = framingService.GetFrames(pinsDowned);
+            List<Frame> bonusFrames = frames.Where(f => f.IsBonus).ToList();
+
+            Assert.Single(bonusFrames);
+        }
+
+        [Fact]
         public void GetFrames_MoreFramesAfterGameCompletion_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
@@ -227,13 +273,23 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         }
 
         [Fact]
-        public void GetFrames_InvalidThrow_ThrowsArgumentException()
+        public void GetFrames_InvalidThrowMoreThan10Pins_ThrowsArgumentException()
         {
             FramingService framingService = new FramingService();
             var pinsDowned = new List<int> { 10, 11 };
 
             var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
             Assert.Equal("Invalid throw with 11 pins down.", exception.Message);
+        }
+
+        [Fact]
+        public void GetFrames_InvalidThrowLessThan0Pins_ThrowsArgumentException()
+        {
+            FramingService framingService = new FramingService();
+            var pinsDowned = new List<int> { 10, -1 };
+
+            var exception = Assert.Throws<ArgumentException>(() => framingService.GetFrames(pinsDowned));
+            Assert.Equal("Invalid throw with -1 pins down.", exception.Message);
         }
     }
 }

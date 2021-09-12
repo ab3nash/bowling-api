@@ -32,17 +32,17 @@
         /// <summary>
         /// The number of pins downed in the first throw of the frame
         /// </summary>
-        public int FirstThrowPinsDowned { get; private set; }
+        public int FirstThrowPinsDowned { get; }
 
         /// <summary>
         /// The number of pins downed in the second throw of the frame
         /// </summary>
-        public int? SecondThrowPinsDowned { get; private set; }
+        public int? SecondThrowPinsDowned { get; }
 
         /// <summary>
         /// A flag indicating if the frame is a bonus frame after a final throw of strike or spare 
         /// </summary>
-        public bool IsBonus { get; private set; }
+        public bool IsBonus { get; }
 
         /// <summary>
         /// A flag indicating if the frame is incomplete

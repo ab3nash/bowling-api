@@ -36,7 +36,7 @@ namespace Kindred.Bowling.Api.Tests.Mock
             fakeFramingService.Setup(mr => mr.GetFrames(It.IsAny<List<int>>())).Returns(
                 (List<int> pinsDowned) =>
                 {
-                    throw new ArgumentException("pinsDowned", message);
+                    throw new ArgumentException(message);
                 });
 
             return fakeFramingService.Object;

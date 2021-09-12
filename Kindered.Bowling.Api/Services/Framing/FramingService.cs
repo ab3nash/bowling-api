@@ -34,11 +34,6 @@ namespace Kindred.Bowling.Api.Services.Framing
                     throw new ArgumentException(string.Format("Invalid throw with {0} pins down.", pinsDowned[i]));
                 }
 
-                if (frames.Count > 10)
-                {
-                    throw new ArgumentException("Invalid number of frames.");
-                }
-
                 if (frames.Count == 10)
                 {
                     int remainingThrows = pinsDowned.Count - i;
@@ -67,13 +62,9 @@ namespace Kindred.Bowling.Api.Services.Framing
                     {
                         frames.Add(new Frame(10, null));
                     }
-                    else if (lastThrowPinsDowned == 0)
-                    {
-                        frames.Add(new Frame(0, 10));
-                    }
                     else
                     {
-                        throw new ArgumentException(string.Format("Invalid frame(s): ({0}, 10)", lastThrowPinsDowned));
+                        frames.Add(new Frame(lastThrowPinsDowned.Value, 10));
                     }
                     lastThrowPinsDowned = null;
                     continue;
@@ -111,7 +102,7 @@ namespace Kindred.Bowling.Api.Services.Framing
             if (invalidFrames.Any())
             {
                 IEnumerable<string> invalidFrameString = invalidFrames.Select(f => string.Format(
-                        "({0}, {1})", f.FirstThrowPinsDowned.ToString(), f.SecondThrowPinsDowned.ToString() ?? "null"));
+                        "({0}, {1})", f.FirstThrowPinsDowned.ToString(), f.SecondThrowPinsDowned.ToString()));
 
                 string exceptionMessage = "Invalid frame(s): ";
                 exceptionMessage += string.Join(", ", invalidFrameString);
