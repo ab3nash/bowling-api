@@ -7,13 +7,13 @@ using Xunit;
 
 namespace Kindred.Bowling.Api.Tests.ServiceTests
 {
-    public class ScoringServiceTests
+    public class TraditionalScoringServiceTests
     {
         #region Empty Frames
         [Fact]
         public void CalculateScore_NullFrame_EmptyScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
 
             ScoringResultDto result = scoringService.CalculateScore(null);
 
@@ -24,7 +24,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_NullFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
 
             ScoringResultDto result = scoringService.CalculateScore(null);
 
@@ -35,7 +35,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_EmptyFrame_EmptyScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
 
             ScoringResultDto result = scoringService.CalculateScore(new List<Frame>());
 
@@ -46,7 +46,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_EmptyFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
 
             ScoringResultDto result = scoringService.CalculateScore(new List<Frame>());
 
@@ -59,7 +59,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleIncompleteFrame_EmptyScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -70,7 +70,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleIncompleteFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -81,7 +81,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleIncompleteFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -94,7 +94,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleOpenFrame_SingleFrameProgressScores()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 6) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -105,7 +105,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleOpenFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 6) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -116,7 +116,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleOpenFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 6) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -129,7 +129,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleSpareFrame_SingleFrameProgressScores()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 8) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -140,7 +140,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleSpareFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 8) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -151,7 +151,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleSpareFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(2, 8) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -164,7 +164,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleStrikeFrame_SingleFrameProgressScores()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(10, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -175,7 +175,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleStrikeFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(10, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -186,7 +186,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_SingleStrikeFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(10, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -199,18 +199,18 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteLastFrame_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.Equal(2, result.FrameProgressScores.Count);
+            Assert.Equal(3, result.FrameProgressScores.Count);
         }
 
         [Fact]
         public void CalculateScore_IncompleteLastFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -222,7 +222,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteLastFrame_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -235,7 +235,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterStrike_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -246,7 +246,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterStrike_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -258,7 +258,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterStrike_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -271,7 +271,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterStrike_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -282,7 +282,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterStrike_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -294,7 +294,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterStrike_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -307,7 +307,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterSpare_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -318,7 +318,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterSpare_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -330,7 +330,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_IncompleteFrameAfterSpare_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -343,7 +343,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterSpare_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -354,7 +354,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterSpare_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -366,7 +366,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteFrameAfterSpare_IncompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
@@ -379,7 +379,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteGame_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -400,7 +400,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteGame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -424,7 +424,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_CompleteGame_IsCompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -447,7 +447,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_PerfectGame_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(10, null),
                 new Frame(10, null),
@@ -469,7 +469,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_PerfectGame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(10, null),
                 new Frame(10, null),
@@ -494,7 +494,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_PerfectGame_IsPerfectGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(10, null),
                 new Frame(10, null),
@@ -519,7 +519,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeAbsent_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -540,7 +540,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeAbsent_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -564,7 +564,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeAbsent_IsInompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -586,7 +586,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeIncomplete_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -598,7 +598,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(10, null),
-                new Frame(8, null)};
+                new Frame(8, null, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
 
@@ -608,7 +608,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeIncomplete_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -620,7 +620,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(10, null),
-                new Frame(8, null)};
+                new Frame(8, null, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
             bool isResultValid =
@@ -633,7 +633,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeIncomplete_IsInompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -656,7 +656,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeComplete_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -668,7 +668,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(10, null),
-                new Frame(8, 1)};
+                new Frame(8, 1, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
 
@@ -678,7 +678,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusFrameAfterStrikeComplete_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -690,7 +690,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(10, null),
-                new Frame(8, 1)};
+                new Frame(8, 1, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
             bool isResultValid =
@@ -701,9 +701,9 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         }
 
         [Fact]
-        public void CalculateScore_BonusFrameAfterStrikeComplete_IsInompleteGame()
+        public void CalculateScore_BonusFrameAfterStrikeComplete_IsCompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -715,7 +715,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(10, null),
-                new Frame(8, 1)};
+                new Frame(8, 1, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
 
@@ -726,7 +726,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSpareAbsent_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -747,7 +747,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSpareAbsent_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -771,7 +771,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSpareAbsent_IsInompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -793,7 +793,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSparePresent_CorrectFrameProgressScoresCount()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -815,7 +815,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSparePresent_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -840,7 +840,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
         [Fact]
         public void CalculateScore_BonusThrowAfterSparePresent_IsInompleteGame()
         {
-            ScoringService scoringService = new ScoringService();
+            TraditionalScoringService scoringService = new TraditionalScoringService();
             var frames = new List<Frame> {
                 new Frame(1, 7),
                 new Frame(10, null),
@@ -852,7 +852,7 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
                 new Frame(6, 4),
                 new Frame(3, 3),
                 new Frame(8, 2),
-                new Frame(8, null)};
+                new Frame(8, null, true)};
 
             ScoringResultDto result = scoringService.CalculateScore(frames);
 

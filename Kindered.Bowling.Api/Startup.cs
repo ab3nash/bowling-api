@@ -23,7 +23,7 @@ namespace Kindred.Bowling.Api
             services.AddControllers();
 
             // register custom services
-            services.AddScoped<IScoringService, ScoringService>();
+            services.AddScoped<IScoringService, TraditionalScoringService>();
             services.AddScoped<IFramingService, FramingService>();
         }
 

@@ -5,8 +5,19 @@ using System.Linq;
 
 namespace Kindred.Bowling.Api.Services.Framing
 {
+    /// <summary>
+    /// Handles tasks related to framing of a 10 Pin bowling game
+    /// </summary>
     public class FramingService : IFramingService
     {
+        /// <summary>
+        /// Forms frames from a list of pins downed in game and validates the frames formed
+        /// </summary>
+        /// <exception cref="Exception">
+        /// Thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
+        /// </exception> 
+        /// <param name="pinsDowned">All the pins downed in a game</param>
+        /// <returns>List of frames corresponding to the pins downed</returns>
         public List<Frame> GetFrames(List<int> pinsDowned)
         {
             var frames = new List<Frame>();
@@ -87,6 +98,13 @@ namespace Kindred.Bowling.Api.Services.Framing
             return frames;
         }
 
+        /// <summary>
+        /// Validates all frames in a game, throws exception if invalid
+        /// </summary>
+        /// <exception cref="Exception">
+        /// Thrown when one or more Frame(s) are invalid
+        /// </exception> 
+        /// <param name="frames"></param>
         private static void ValidateFrames(List<Frame> frames)
         {
             List<Frame> invalidFrames = frames.Where(f => !f.IsValid && !f.IsBonus && !f.IsIncomplete).ToList();

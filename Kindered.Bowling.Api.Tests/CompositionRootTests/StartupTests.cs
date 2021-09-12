@@ -27,7 +27,7 @@ namespace Kindred.Bowling.Api.Tests.CompositionRootTests
             var service = _serviceProvider.GetRequiredService<IScoringService>();
 
             Assert.NotNull(service);
-            Assert.IsType<ScoringService>(service);
+            Assert.IsType<TraditionalScoringService>(service);
         }
 
         [Fact]
