@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindred.Bowling.Api", "Kindered.Bowling.Api\Kindred.Bowling.Api.csproj", "{A274374D-A572-47F3-BCF4-DF63B55AE1B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindred.Bowling.Api", "Kindred.Bowling.Api\Kindred.Bowling.Api.csproj", "{A274374D-A572-47F3-BCF4-DF63B55AE1B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindred.Bowling.Api.Tests", "Kindered.Bowling.Api.Tests\Kindred.Bowling.Api.Tests.csproj", "{75A84D23-A3FE-4457-8D24-1134898900C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindred.Bowling.Api.Tests", "Kindred.Bowling.Api.Tests\Kindred.Bowling.Api.Tests.csproj", "{75A84D23-A3FE-4457-8D24-1134898900C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

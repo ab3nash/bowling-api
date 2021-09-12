@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kindred.Bowling.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Kindred.Bowling.Api.Controllers.ScoresController">
+            <summary>
+            Handles requests related to 10 Pin bowling scores
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Controllers.ScoresController.#ctor(Kindred.Bowling.Api.Services.Framing.IFramingService,Kindred.Bowling.Api.Services.Scoring.IScoringService,Microsoft.Extensions.Logging.ILogger{Kindred.Bowling.Api.Controllers.ScoresController})">
+            <summary>
+            Creates an instance of ScoresController class
+            </summary>
+            <param name="framingService">An implementation of IFramingService</param>
+            <param name="scoringService">An implementation of IScoringService</param>
+            <param name="logger">The logger</param>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Controllers.ScoresController.Post(Kindred.Bowling.Api.Models.ScoringRequestDto)">
+            <summary>
+            Calculates the scores and checks if game is completed for a set of pins downed per throw.
+            Gets Frames from the pinsDowned list and calculates frame progress score per frame.
+            </summary>
+            <param name="scoringRequest">Scoring request object with list of pins downed per throw</param>
+            <returns>
+            Either One of:
+            1. OK with ScoringResultDto for success
+            2. Badrequest with ModelState dictionary for bad requests
+            3. InternalServerError
+            </returns>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware">
+            <summary>
+            Middleware to handle API key authentication
+            Expects API Key in ApiKey header
+            Based on: https://github.com/aram87/SecuringWebApiUsingApiKey
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Creates an instance of the ApiMiddleware Class
+            </summary>
+            <param name="next">The RequestDelegate to build the request pipeline</param>
+            <param name="logger">The configured Logger</param>
+            <param name="configuration">Application Configuration</param>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Middlewares.ApiKeyMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Validates API key in the request header to API key in the app configuration file
+            </summary>
+            <param name="context">The HttpContext for the request</param>
+            <returns>
+            Task that represents the execution of the middleware with
+            HTTP 401 - Unauthorized response if API key is not provided or is invalid
+            or continues the execution of request pipeline
+            </returns>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Models.Frame">
+            <summary>
+            Represents a frame in a 10 pin bowlign game
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Models.Frame.#ctor(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Initialises a new instance of Frame class
+            </summary>
+            <param name="firstThrowPinsDowned">The number of pins downed in the first throw of the frame</param>
+            <param name="secondThrowPinsDowned">The number of pins downed in the second throw of the frame</param>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Models.Frame.#ctor(System.Int32,System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Initialises a new instance of Frame class
+            </summary>
+            <param name="firstThrowPinsDowned">The number of pins downed in the first throw of the frame</param>
+            <param name="secondThrowPinsDowned">The number of pins downed in the second throw of the frame</param>
+            <param name="isBonus">Whether the frame is a bonus frame after a final throw of strike or spare</param>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.FirstThrowPinsDowned">
+            <summary>
+            The number of pins downed in the first throw of the frame
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.SecondThrowPinsDowned">
+            <summary>
+            The number of pins downed in the second throw of the frame
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsBonus">
+            <summary>
+            A flag indicating if the frame is a bonus frame after a final throw of strike or spare 
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsIncomplete">
+            <summary>
+            A flag indicating if the frame is incomplete
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsValid">
+            <summary>
+            A flag indicating if the frame is valid
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsStrike">
+            <summary>
+            A flag indicating if the frame is a strike frame
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsSpare">
+            <summary>
+            A flag indicating if the frame is a spare frame
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.Frame.IsOpen">
+            <summary>
+            A flag indicating if the frame is an open frame
+            </summary>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Models.ScoringRequestDto">
+            <summary>
+            Models the scoring request parameters
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.ScoringRequestDto.PinsDowned">
+            <summary>
+            The list of pins downed on each throw
+            </summary>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Models.ScoringResultDto">
+            <summary>
+            DTO to transfer scoring result of a 10 Pin Bowling game
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.ScoringResultDto.FrameProgressScores">
+            <summary>
+            The list of Frame Progress Scores for the game
+            </summary>
+        </member>
+        <member name="P:Kindred.Bowling.Api.Models.ScoringResultDto.GameCompleted">
+            <summary>
+            Indicates whether the game is complete
+            </summary>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Services.Framing.FramingService">
+            <summary>
+            Handles tasks related to framing of a 10 Pin bowling game
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Framing.FramingService.GetFrames(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Forms frames from a list of pins downed in game and validates the frames formed
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            Thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
+            </exception> 
+            <param name="pinsDowned">All the pins downed in a game</param>
+            <returns>List of frames corresponding to the pins downed</returns>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Framing.FramingService.ValidateFrames(System.Collections.Generic.List{Kindred.Bowling.Api.Models.Frame})">
+            <summary>
+            Validates all frames in a game, throws exception if invalid
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            Thrown when one or more Frame(s) are invalid
+            </exception> 
+            <param name="frames"></param>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Services.Framing.IFramingService">
+            <summary>
+            Handles tasks related to framing of a 10 Pin bowling game
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Framing.IFramingService.GetFrames(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Forms frames from a list of pins downed in game and validates the frames formed
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            Can be thrown when pins downed is invalid to form Frames or formed Frame(s) are invalid
+            </exception> 
+            <param name="pinsDowned">All the pins downed in a game</param>
+            <returns>List of frames corresponding to the pins downed</returns>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Services.Scoring.IScoringService">
+            <summary>
+            Defines all tasks related to scoring a 10 pin bowling game
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Scoring.IScoringService.CalculateScore(System.Collections.Generic.List{Kindred.Bowling.Api.Models.Frame})">
+            <summary>
+            Calculates the progress scores for a game according to the traditional scoring method
+            If the progress score for a frame cannot be determined, it is marked as an asterisk(*)
+            </summary>
+            <param name="frames">All frames in a game</param>
+            <returns>The list of Frame Progress Scores with a flag indicating whether or not the game is complete</returns>
+        </member>
+        <member name="T:Kindred.Bowling.Api.Services.Scoring.TraditionalScoringService">
+            <summary>
+            Handles all tasks related to scoring a 10 pin bowling game
+            </summary>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Scoring.TraditionalScoringService.CalculateScore(System.Collections.Generic.List{Kindred.Bowling.Api.Models.Frame})">
+            <summary>
+            Calculates the progress scores for a game according to the traditional scoring method
+            If the progress score for a frame cannot be determined, it is marked as an asterisk(*)
+            More information on the scoring process may be found in the following links:
+            https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring
+            https://www.bowlinggenius.com/
+            https://www.liveabout.com/bowling-scoring-420895
+            </summary>
+            <param name="frames">All frames in a game</param>
+            <returns>The list of Frame Progress Scores with a flag indicating whether or not the game is complete</returns>
+        </member>
+        <member name="M:Kindred.Bowling.Api.Services.Scoring.TraditionalScoringService.IsGameComplete(System.Collections.Generic.List{Kindred.Bowling.Api.Models.Frame})">
+            <summary>
+            Checks if a game is complete
+            </summary>
+            <param name="frames">All frames in a game</param>
+            <returns>True if complete, False otherwise</returns>
+        </member>
+    </members>
+</doc>

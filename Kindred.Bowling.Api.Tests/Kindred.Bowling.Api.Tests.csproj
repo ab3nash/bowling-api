@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kindered.Bowling.Api\Kindred.Bowling.Api.csproj" />
+    <ProjectReference Include="..\Kindred.Bowling.Api\Kindred.Bowling.Api.csproj" />
   </ItemGroup>
 
 </Project>
