@@ -1,5 +1,6 @@
 ﻿using Kindred.Bowling.Api.Models;
 using Kindred.Bowling.Api.Services.Scoring;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -8,241 +9,858 @@ namespace Kindred.Bowling.Api.Tests.ServiceTests
 {
     public class ScoringServiceTests
     {
+        #region Empty Frames
         [Fact]
-        public void CalculateScore_PinsDownedNull_ReturnsNotNull()
+        public void CalculateScore_NullFrame_EmptyScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
+            ScoringService scoringService = new ScoringService();
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(null);
+            ScoringResultDto result = scoringService.CalculateScore(null);
 
-            Assert.NotNull(scoringResult);
-        }
+            Assert.Empty(result.FrameProgressScores);
 
-        [Fact]
-        public void CalculateScore_PinsDownedEmpty_ReturnsNotNull()
-        {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int>();
-
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
-
-            Assert.NotNull(scoringResult);
         }
 
         [Fact]
-        public void CalculateScore_IncompleteFirstFrame_ReturnsEmptyFrameProgressScores()
+        public void CalculateScore_NullFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1 };
+            ScoringService scoringService = new ScoringService();
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(null);
 
-            Assert.Empty(scoringResult.FrameProgressScores);
-        }
+            Assert.False(result.GameCompleted);
 
-        //[Fact]
-        //public void CalculateScore_IncompleteFirstFrame_GameNotComplete()
-        //{
-        //    ScoringService scoringService = CreateDefaultScoringService();
-        //    var pinsDowned = new List<int> { 1 };
-
-        //    ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
-
-        //    Assert.False(scoringResult.GameCompleted);
-        //}
-
-        [Fact]
-        public void CalculateScore_SingleOpenFrame_ReturnsSingleFrameProgressScores()
-        {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1 };
-
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
-
-            Assert.Single(scoringResult.FrameProgressScores);
         }
 
         [Fact]
-        public void CalculateScore_SingleOpenFrame_ReturnsCorrectFrameProgressScores()
+        public void CalculateScore_EmptyFrame_EmptyScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1 };
+            ScoringService scoringService = new ScoringService();
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
-            string currentFrameProgressScore = scoringResult.FrameProgressScores[0];
+            ScoringResultDto result = scoringService.CalculateScore(new List<Frame>());
 
-            Assert.Equal("2", currentFrameProgressScore);
+            Assert.Empty(result.FrameProgressScores);
+
         }
 
         [Fact]
-        public void CalculateScore_SingleOpenFrame_GameNotComplete()
+        public void CalculateScore_EmptyFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1 };
+            ScoringService scoringService = new ScoringService();
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(new List<Frame>());
 
-            Assert.False(scoringResult.GameCompleted);
+            Assert.False(result.GameCompleted);
+
+        }
+        #endregion
+
+        #region Single Incomplete Frame
+        [Fact]
+        public void CalculateScore_SingleIncompleteFrame_EmptyScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Single(result.FrameProgressScores);
         }
 
         [Fact]
-        public void CalculateScore_TwoOpenFrames_ReturnsTwoFrameProgressScores()
+        public void CalculateScore_SingleIncompleteFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1, 2, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.Equal(2, scoringResult.FrameProgressScores.Count);
+            Assert.Equal("*", result.FrameProgressScores[0]);
         }
 
         [Fact]
-        public void CalculateScore_TwoOpenFrames_GameNotComplete()
+        public void CalculateScore_SingleIncompleteFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1, 2, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.False(scoringResult.GameCompleted);
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Single Open Frame
+        [Fact]
+        public void CalculateScore_SingleOpenFrame_SingleFrameProgressScores()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 6) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Single(result.FrameProgressScores);
         }
 
         [Fact]
-        public void CalculateScore_SingleStrikeFrame_ReturnsSingleFrameProgressScores()
+        public void CalculateScore_SingleOpenFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 10 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 6) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.Single(scoringResult.FrameProgressScores);
+            Assert.Equal("8", result.FrameProgressScores[0]);
         }
 
         [Fact]
-        public void CalculateScore_SingleStrikeFrame_GameNotComplete()
+        public void CalculateScore_SingleOpenFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 1, 1 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 6) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.False(scoringResult.GameCompleted);
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Single Spare Frame
+        [Fact]
+        public void CalculateScore_SingleSpareFrame_SingleFrameProgressScores()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 8) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Single(result.FrameProgressScores);
         }
 
         [Fact]
-        public void CalculateScore_OpenAfterStrike_ReturnsTwoFrameProgressScores()
+        public void CalculateScore_SingleSpareFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 10, 1, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 8) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.Equal(2, scoringResult.FrameProgressScores.Count);
+            Assert.Equal("*", result.FrameProgressScores[0]);
         }
 
         [Fact]
-        public void CalculateScore_OpenAfterStrike_ReturnsCorrectFirstFrameProgressScores()
+        public void CalculateScore_SingleSpareFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 10, 1, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(2, 8) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.Equal(2, scoringResult.FrameProgressScores.Count);
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Single Strike Frame
+        [Fact]
+        public void CalculateScore_SingleStrikeFrame_SingleFrameProgressScores()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(10, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Single(result.FrameProgressScores);
         }
 
         [Fact]
-        public void CalculateScore_OpenAfterStrike_GameNotComplete()
+        public void CalculateScore_SingleStrikeFrame_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 10, 1, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(10, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.False(scoringResult.GameCompleted);
+            Assert.Equal("*", result.FrameProgressScores[0]);
         }
 
         [Fact]
-        public void CalculateScore_CompleteGame_GameNotComplete()
+        public void CalculateScore_SingleStrikeFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
-            var pinsDowned = new List<int> { 10, 1, 2 };
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(10, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.False(scoringResult.GameCompleted);
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Incomplete Last Frame
+        [Fact]
+        public void CalculateScore_IncompleteLastFrame_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(2, result.FrameProgressScores.Count);
         }
 
-
-        private ScoringService CreateDefaultScoringService()
+        [Fact]
+        public void CalculateScore_IncompleteLastFrame_CorrectFrameProgressScoring()
         {
-            return new ScoringService();
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid = new List<string> { "8", "16", "*" }.SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
         }
 
-        [Theory, MemberData(nameof(GamesListToValidateScoring))]
-        public void CalculateScore_TwoOpenFrames_ReturnCorrectFrameProgressScores(List<int> pinsDowned, List<string> expectedScore)
+        [Fact]
+        public void CalculateScore_IncompleteLastFrame_IncompleteGame()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(3, 5), new Frame(6, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
-            bool isCorrectFrameProgressScore = expectedScore.SequenceEqual(scoringResult.FrameProgressScores);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
 
-            Assert.True(isCorrectFrameProgressScore);
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Incomplete Frame After Strike
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterStrike_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(3, result.FrameProgressScores.Count);
         }
 
-        [Theory, MemberData(nameof(GamesListToCheckCompletion))]
-        public void CalculateScore_TwoOpenFrames_ReturnCorrectGameCompletionStatus(List<int> pinsDowned, bool expectedStatus)
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterStrike_CorrectFrameProgressScoring()
         {
-            ScoringService scoringService = CreateDefaultScoringService();
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
 
-            ScoringResultDto scoringResult = scoringService.CalculateScore(pinsDowned);
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid = new List<string> { "8", "*", "*" }.SequenceEqual(result.FrameProgressScores);
 
-            Assert.Equal(expectedStatus, scoringResult.GameCompleted);
+            Assert.True(isResultValid);
         }
 
-        public static IEnumerable<object[]> GamesListToValidateScoring => new List<object[]>  {
-            new object[] { null, new List<string>() },
-            new object[] { new List<int>(), new List<string>() },
-            new object[] { new List<int>{ 1, 1 }, new List<string> {"2"} },
-            new object[] { new List<int> { 2, 2 }, new List<string> {"4"} },
-            new object[] { new List<int> { 5, 4 }, new List<string> {"9"} },
-            new object[] { new List<int> { 10 }, new List<string>() },
-            new object[] { new List<int> { 10, 1 }, new List<string>() },
-            new object[] { new List<int> { 10, 1, 2 }, new List<string> {"13", "16"} },
-            new object[] { new List<int> { 7, 3 }, new List<string> () },
-            new object[] { new List<int> { 7, 3, 4 }, new List<string> {"14"} },
-            new object[] { new List<int> { 7, 3, 4, 2 }, new List<string> {"14", "20"} },
-            new object[] { new List<int> { 10, 10 }, new List<string> () },
-            new object[] { new List<int> { 10, 10, 10 }, new List<string> { "30"} },
-            new object[] {
-                new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 },
-                new List<string> { "30, 60, 90, 120, 150, 180, 210, 240, 270, 300"} },
-        };
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterStrike_IncompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, null) };
 
-        public static IEnumerable<object[]> GamesListToCheckCompletion => new List<object[]>  {
-            new object[] { null, false},
-            new object[] { new List<int>(), false },
-            new object[] { new List<int> { 1 }, false },
-            new object[] { new List<int> { 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false },
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, false},
-            new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, true},
-            new object[] { new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 }, true }
-        };
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Complete Frame After Strike
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterStrike_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(3, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterStrike_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid = new List<string> { "8", "27", "36" }.SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterStrike_IncompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(10, null), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Incomplete Frame After Spare
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterSpare_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(3, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterSpare_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid = new List<string> { "8", "24", "*" }.SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_IncompleteFrameAfterSpare_IncompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Complete Frame After Spare
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterSpare_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(3, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterSpare_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid = new List<string> { "8", "24", "33" }.SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteFrameAfterSpare_IncompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> { new Frame(1, 7), new Frame(9, 1), new Frame(6, 3) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+
+        #region Complete Games
+        [Fact]
+        public void CalculateScore_CompleteGame_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(6, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteGame_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(6, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "115" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_CompleteGame_IsCompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(6, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.True(result.GameCompleted);
+        }
+        #endregion
+
+        #region Perfect Games
+        [Fact]
+        public void CalculateScore_PerfectGame_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, 10, true)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_PerfectGame_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, 10, true)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "30", "60", "90", "120", "150", "180", "210", "240", "270", "300" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_PerfectGame_IsPerfectGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, null),
+                new Frame(10, 10, true)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.True(result.GameCompleted);
+        }
+        #endregion
+
+        #region Games with Bonus Frames
+        #region BonusFrameAfterStrikeAbsent
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeAbsent_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeAbsent_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "*" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeAbsent_IsInompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+        #region BonusFrameAfterStrikeIncomplete
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeIncomplete_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, null)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeIncomplete_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, null)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "*" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeIncomplete_IsInompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, null)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+        #region BonusFrameAfterStrikeComplete
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeComplete_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, 1)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeComplete_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, 1)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "126" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusFrameAfterStrikeComplete_IsInompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(10, null),
+                new Frame(8, 1)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.True(result.GameCompleted);
+        }
+        #endregion
+        #region BonusThrowAfterSpareAbsent
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSpareAbsent_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSpareAbsent_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "*" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSpareAbsent_IsInompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2) };
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.False(result.GameCompleted);
+        }
+        #endregion
+        #region BonusThrowAfterSparePresent
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSparePresent_CorrectFrameProgressScoresCount()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2),
+                new Frame(8, null, true)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.Equal(10, result.FrameProgressScores.Count);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSparePresent_CorrectFrameProgressScoring()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2),
+                new Frame(8, null, true)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+            bool isResultValid =
+                new List<string> { "8", "26", "34", "43", "52", "72", "88", "101", "107", "125" }
+                .SequenceEqual(result.FrameProgressScores);
+
+            Assert.True(isResultValid);
+        }
+
+        [Fact]
+        public void CalculateScore_BonusThrowAfterSparePresent_IsInompleteGame()
+        {
+            ScoringService scoringService = new ScoringService();
+            var frames = new List<Frame> {
+                new Frame(1, 7),
+                new Frame(10, null),
+                new Frame(1, 7),
+                new Frame(2, 7),
+                new Frame(8, 1),
+                new Frame(10, null),
+                new Frame(8, 2),
+                new Frame(6, 4),
+                new Frame(3, 3),
+                new Frame(8, 2),
+                new Frame(8, null)};
+
+            ScoringResultDto result = scoringService.CalculateScore(frames);
+
+            Assert.True(result.GameCompleted);
+        }
+        #endregion
+        #region After Spare
+        #endregion
+        #endregion
     }
 }

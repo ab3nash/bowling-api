@@ -5,6 +5,6 @@ namespace Kindred.Bowling.Api.Services.Scoring
 {
     public interface IScoringService
     {
-        ScoringResultDto CalculateScore(List<int> pinsDowned);
+        ScoringResultDto CalculateScore(List<Frame> frames);
     }
 }

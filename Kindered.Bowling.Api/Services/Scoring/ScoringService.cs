@@ -6,15 +6,8 @@ namespace Kindred.Bowling.Api.Services.Scoring
 {
     public class ScoringService : IScoringService
     {
-        public ScoringResultDto CalculateScore(List<int> pinsDowned)
+        public ScoringResultDto CalculateScore(List<Frame> frames)
         {
-            var scoringResult = new ScoringResultDto();
-
-            if(pinsDowned == null || pinsDowned.Count < 2)
-            {
-                return scoringResult;
-            }
-
             throw new NotImplementedException();
         }
     }
